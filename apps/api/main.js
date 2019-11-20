@@ -374,7 +374,7 @@ const NETWORK_DEV = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return setVariables; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return setVariable; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return setPower; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return setTemp; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getState; });
@@ -385,7 +385,7 @@ const homeState = {
         studio: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"],
         bathroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"],
         bedroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"],
-        kidsroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"]
+        kidsroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"],
     },
     variables: {
         studio: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"],
@@ -394,7 +394,7 @@ const homeState = {
         bedroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"],
         interval: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"],
         hysteresis: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"],
-        nightShift: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"]
+        nightShift: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "b"],
     },
     power: {
         pump: '-1',
@@ -402,10 +402,15 @@ const homeState = {
         studio: '-1',
         bathroom: '-1',
         kidsroom: '-1',
-        bedroom: '-1'
-    }
+        bedroom: '-1',
+    },
 };
-function setVariables(variable, val) {
+const validateVariableName = (variableName) => {
+    if (variableName.indexOf('/') > -1)
+        throw new Error(`${variableName} is invalid`);
+};
+function setVariable(variable, val) {
+    validateVariableName(variable);
     homeState.variables[variable] = val;
 }
 function setPower(power, state) {
@@ -633,6 +638,8 @@ function startScheduler() {
 /* harmony import */ var _monorepo_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 
 
+const getVariableName = (setTopic) => setTopic.split('/')[1];
+const parsePayload = (payload) => payload.split(';').map(keyVal => keyVal.split('='));
 const handleMessage = (topic, payload) => {
     switch (topic) {
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "c"].studio:
@@ -648,18 +655,17 @@ const handleMessage = (topic, payload) => {
             Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setTemp */ "c"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* Room */ "f"].bedroom, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "c"].power:
-            parsePayload(payload).forEach(([key, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setPower */ "b"])(key, value));
+            parsePayload(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setPower */ "b"])(getVariableName(topic), value));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "c"].variables:
-            parsePayload(payload).forEach(([key, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setVariables */ "d"])(key, parseFloat(value)));
+            parsePayload(payload).forEach(([key, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setVariable */ "d"])(key, parseFloat(value)));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "e"].confirmed:
-            const [key, val] = payload.split('/')[1].split('=');
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setVariables */ "d"])(key, parseFloat(val));
+            const [key, val] = getVariableName(payload).split('=');
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setVariable */ "d"])(key, parseFloat(val));
             break;
     }
 };
-const parsePayload = (payload) => payload.split(';').map(keyVal => keyVal.split('='));
 
 
 /***/ }),
