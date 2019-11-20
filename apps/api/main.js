@@ -655,10 +655,10 @@ const handleMessage = (topic, payload) => {
             Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setTemp */ "c"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* Room */ "f"].bedroom, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "c"].power:
-            parsePayload(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setPower */ "b"])(getVariableName(topic), value));
+            parsePayload(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setPower */ "b"])(topic, value));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "c"].variables:
-            parsePayload(payload).forEach(([key, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setVariable */ "d"])(key, parseFloat(value)));
+            parsePayload(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setVariable */ "d"])(getVariableName(topic), parseFloat(value)));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "e"].confirmed:
             const [key, val] = getVariableName(payload).split('=');
