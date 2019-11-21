@@ -270,6 +270,7 @@ class MqttService {
     }
     setVariableValue(topic, payload, attempts = 5) {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function* () {
+            const varName = topic.split('/')[1];
             const verifyConfirmation = () => {
                 if (this.confirmations.get(varName) !== parseFloat(payload) &&
                     attempts > 0)
@@ -277,7 +278,6 @@ class MqttService {
             };
             yield this.sendMessage(topic, payload);
             setTimeout(verifyConfirmation, 1000);
-            const varName = topic.split('/')[1];
         });
     }
 }
@@ -329,7 +329,7 @@ var RequestSetTopic;
     RequestSetTopic["bathroom"] = "set/bathroom";
     RequestSetTopic["kidsroom"] = "set/kidsroom";
     RequestSetTopic["bedroom"] = "set/bedroom";
-    RequestSetTopic["confirmed"] = "set/confirmed";
+    RequestSetTopic["confirmed"] = "set/confirmation";
 })(RequestSetTopic || (RequestSetTopic = {}));
 
 

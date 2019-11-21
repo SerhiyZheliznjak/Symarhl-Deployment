@@ -135,7 +135,7 @@ var RequestSetTopic;
     RequestSetTopic["bathroom"] = "set/bathroom";
     RequestSetTopic["kidsroom"] = "set/kidsroom";
     RequestSetTopic["bedroom"] = "set/bedroom";
-    RequestSetTopic["confirmed"] = "set/confirmed";
+    RequestSetTopic["confirmed"] = "set/confirmation";
 })(RequestSetTopic || (RequestSetTopic = {}));
 
 
