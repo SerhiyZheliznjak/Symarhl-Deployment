@@ -695,7 +695,9 @@ module.exports = require("child_process");
 
 
 const debug = debug__WEBPACK_IMPORTED_MODULE_1__('heating-service:cors');
-const whiteList = [_monorepo_core__WEBPACK_IMPORTED_MODULE_2__[/* NETWORK_DEV */ "a"].WEB_PORT, _monorepo_core__WEBPACK_IMPORTED_MODULE_2__[/* NETWORK_PROD */ "b"].WEB_PORT].map(port => `http://localhost:${port}`);
+const ports = [_monorepo_core__WEBPACK_IMPORTED_MODULE_2__[/* NETWORK_DEV */ "a"].WEB_PORT, _monorepo_core__WEBPACK_IMPORTED_MODULE_2__[/* NETWORK_PROD */ "b"].WEB_PORT];
+const hosts = ['localhost', '192.168.31.247'];
+const whiteList = ports.reduce((acc, port) => [...hosts.map(host => `http://${host}:${port}`), ...acc], []);
 debug(`enabled for: [${whiteList}]`);
 const corsOptions = {
     origin: (origin, callback) => {
