@@ -498,6 +498,7 @@ const homeState = {
         bathroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
         bedroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
         kidsroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
+        outdoor: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
     },
     variables: {
         studio: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
