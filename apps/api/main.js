@@ -774,7 +774,9 @@ const handleMessage = (topic, payload) => {
 function setAllVariables() {
     const { variables } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* getState */ "b"])();
     Object.keys(variables).forEach((variable, i) => {
-        setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].setVariableValue(`set/${variable}`, String(variables[variable])), i * 300);
+        const value = variables[variable];
+        if (value !== _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"])
+            setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].setVariableValue(`set/${variable}`, String(value)), i * 300);
     });
 }
 

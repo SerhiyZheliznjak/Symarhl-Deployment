@@ -102,6 +102,7 @@ var Room;
     Room["bathroom"] = "bathroom";
     Room["kidsroom"] = "kidsroom";
     Room["bedroom"] = "bedroom";
+    Room["outdoor"] = "outdoor";
 })(Room || (Room = {}));
 
 
@@ -119,8 +120,10 @@ var ReadTopic;
     ReadTopic["bathroom"] = "temp/bathroom";
     ReadTopic["kidsroom"] = "temp/kidsroom";
     ReadTopic["bedroom"] = "temp/bedroom";
+    ReadTopic["outdoor"] = "temp/outdoor";
     ReadTopic["power"] = "power";
     ReadTopic["variables"] = "variables";
+    ReadTopic["started"] = "started";
 })(ReadTopic || (ReadTopic = {}));
 var RequestGetTopic;
 (function (RequestGetTopic) {
@@ -128,7 +131,6 @@ var RequestGetTopic;
 })(RequestGetTopic || (RequestGetTopic = {}));
 var RequestSetTopic;
 (function (RequestSetTopic) {
-    RequestSetTopic["nightShift"] = "set/nightShift";
     RequestSetTopic["hysteresis"] = "set/hysteresis";
     RequestSetTopic["interval"] = "set/interval";
     RequestSetTopic["studio"] = "set/studio";
