@@ -81,14 +81,25 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 8);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-module.exports = require("express");
+"use strict";
+/* harmony import */ var _lib_TempLocations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _lib_topics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _lib_HomeState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+/* harmony import */ var _lib_network__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _lib_network__WEBPACK_IMPORTED_MODULE_3__["a"]; });
+
+
+
+
+
+
 
 /***/ }),
 /* 1 */
@@ -180,73 +191,48 @@ const NETWORK_DEV = {
 
 /***/ }),
 /* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
-/* harmony import */ var _monorepo_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(6);
-
-const environment = {
-    production: false,
-    port: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NETWORK_PROD */ "a"].WEB_PORT,
-};
-
+module.exports = require("express");
 
 /***/ }),
 /* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _lib_TempLocations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
-/* harmony import */ var _lib_topics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _lib_HomeState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
-/* harmony import */ var _lib_network__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(4);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _lib_network__WEBPACK_IMPORTED_MODULE_3__["a"]; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return environment; });
+/* harmony import */ var _monorepo_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 
-
-
-
-
+const environment = {
+    production: true,
+    port: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NETWORK_PROD */ "a"].DB_PORT,
+    influx: `http://${_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NETWORK_PROD */ "a"].MS_ADDRESS}:${_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NETWORK_PROD */ "a"].INFLUX_PORT}`,
+};
 
 
 /***/ }),
 /* 7 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-module.exports = require("path");
+module.exports = __webpack_require__(8);
+
 
 /***/ }),
 /* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(9);
-
-
-/***/ }),
-/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
+/* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _environments_environment_prod__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(5);
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_2__);
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- **/
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 
 
-
-const { port } = _environments_environment_prod__WEBPACK_IMPORTED_MODULE_1__[/* environment */ "a"];
 const app = express__WEBPACK_IMPORTED_MODULE_0__();
-const clientDir = express__WEBPACK_IMPORTED_MODULE_0__["static"](Object(path__WEBPACK_IMPORTED_MODULE_2__["join"])(__dirname, '../symarhl'), {
-    maxAge: 1000 * 60 * 60 * 24,
+app.get('/api', (_req, res) => {
+    res.send({ message: 'Welcome to db!' });
 });
-app.use(clientDir);
-app.use('/*', clientDir);
+const { port } = _environments_environment__WEBPACK_IMPORTED_MODULE_1__[/* environment */ "a"];
 const server = app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}/api`);
 });

@@ -81,7 +81,7 @@
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 29);
+/******/ 	return __webpack_require__(__webpack_require__.s = 30);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -89,20 +89,20 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _lib_Rooms__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "g", function() { return _lib_Rooms__WEBPACK_IMPORTED_MODULE_0__["a"]; });
+/* harmony import */ var _lib_TempLocations__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(13);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "f", function() { return _lib_TempLocations__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
-/* harmony import */ var _lib_topics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13);
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "g", function() { return _lib_TempLocations__WEBPACK_IMPORTED_MODULE_0__["b"]; });
+
+/* harmony import */ var _lib_topics__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _lib_topics__WEBPACK_IMPORTED_MODULE_1__["a"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "e", function() { return _lib_topics__WEBPACK_IMPORTED_MODULE_1__["b"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "f", function() { return _lib_topics__WEBPACK_IMPORTED_MODULE_1__["c"]; });
-
-/* harmony import */ var _lib_HomeState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(14);
+/* harmony import */ var _lib_HomeState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(15);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _lib_HomeState__WEBPACK_IMPORTED_MODULE_2__["a"]; });
 
-/* harmony import */ var _lib_network__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(15);
+/* harmony import */ var _lib_network__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(16);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _lib_network__WEBPACK_IMPORTED_MODULE_3__["a"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _lib_network__WEBPACK_IMPORTED_MODULE_3__["b"]; });
@@ -118,7 +118,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _lib_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16);
+/* harmony import */ var _lib_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(17);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _lib_store__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _lib_store__WEBPACK_IMPORTED_MODULE_0__["b"]; });
@@ -139,7 +139,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _lib_mqtt__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11);
+/* harmony import */ var _lib_mqtt__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _lib_mqtt__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
 
@@ -177,10 +177,12 @@ module.exports = require("debug");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return startScheduler; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setCurrentShift; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return stopScheduler; });
-/* harmony import */ var _monorepo_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
-/* harmony import */ var _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
-/* harmony import */ var _monorepo_store__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(1);
-const { scheduleJob } = __webpack_require__(31);
+/* harmony import */ var node_schedule__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(9);
+/* harmony import */ var node_schedule__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(node_schedule__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _monorepo_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(0);
+/* harmony import */ var _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
+/* harmony import */ var _monorepo_store__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1);
+
 
 
 
@@ -192,73 +194,73 @@ function getTomorrow(today) {
     return tomorrow;
 }
 function queueShift(topic, temp) {
-    setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__[/* mqttService */ "a"].setVariableValue(topic, temp), 500);
+    setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].setVariableValue(topic, temp), 500);
 }
 function setDayShift() {
-    const { variables, nightShift } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
+    const { variables, nightShift } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_3__[/* getState */ "b"])();
     Array.from(nightShift.at.entries()).forEach(([room]) => {
-        queueShift(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "f"][room], String(variables[room]));
+        queueShift(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "e"][room], String(variables[room]));
     });
 }
 function setNightShift() {
-    const { nightShift } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
+    const { nightShift } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_3__[/* getState */ "b"])();
     Array.from(nightShift.at.entries()).forEach(([room, nightTemp]) => {
-        queueShift(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "f"][room], String(nightTemp));
+        queueShift(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "e"][room], String(nightTemp));
     });
 }
 function scheduleDayShift(tomorrow) {
     const date = new Date(tomorrow.getTime());
-    const { morning } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])().nightShift;
+    const { morning } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_3__[/* getState */ "b"])().nightShift;
     date.setHours(morning, 0, 0);
-    morningJob = scheduleJob(date, () => {
+    morningJob = Object(node_schedule__WEBPACK_IMPORTED_MODULE_0__["scheduleJob"])(date, () => {
         setDayShift();
         scheduleNightShift(date);
     });
 }
 function scheduleNightShift(today) {
     const date = new Date(today.getTime());
-    const { evening } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])().nightShift;
+    const { evening } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_3__[/* getState */ "b"])().nightShift;
     date.setHours(evening, 0, 0);
-    eveningJob = scheduleJob(date, () => {
+    eveningJob = Object(node_schedule__WEBPACK_IMPORTED_MODULE_0__["scheduleJob"])(date, () => {
         setNightShift();
         scheduleDayShift(getTomorrow(date));
     });
 }
 function startScheduler(room, nigthtTemp) {
     const now = new Date();
-    const { nightShift, variables } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
+    const { nightShift, variables } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_3__[/* getState */ "b"])();
     const { evening, morning } = nightShift;
-    Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setNightTemp */ "c"])(room, nigthtTemp);
+    Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_3__[/* logNightTemp */ "c"])(room, nigthtTemp);
     const currentHour = now.getHours();
     if (currentHour < morning) {
         if (!morningJob)
             scheduleDayShift(now);
-        _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "f"][room], String(nigthtTemp));
+        _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "e"][room], String(nigthtTemp));
     }
     else if (currentHour < evening) {
         if (!eveningJob)
             scheduleNightShift(now);
-        _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "f"][room], String(variables[room]));
+        _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "e"][room], String(variables[room]));
     }
     else {
         if (!morningJob)
             scheduleDayShift(getTomorrow(now));
-        _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "f"][room], String(nigthtTemp));
+        _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "e"][room], String(nigthtTemp));
     }
 }
 function setCurrentShift() {
-    const { morning, evening, at } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])().nightShift;
+    const { morning, evening, at } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_3__[/* getState */ "b"])().nightShift;
     const now = new Date();
     const currentHour = now.getHours();
     if (currentHour < morning || currentHour > evening) {
-        at.forEach((nightTemp, room) => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "f"][room], String(nightTemp)));
+        at.forEach((nightTemp, room) => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "e"][room], String(nightTemp)));
     }
     else {
-        at.forEach((_, room) => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "f"][room], String(Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])().variables[room])));
+        at.forEach((_, room) => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "e"][room], String(Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_3__[/* getState */ "b"])().variables[room])));
     }
 }
 function stopScheduler(room) {
-    if (Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* delNightTemp */ "a"])(room) < 1) {
+    if (Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_3__[/* delNightTemp */ "a"])(room) < 1) {
         if (morningJob) {
             morningJob.cancel();
             morningJob = null;
@@ -276,16 +278,16 @@ function stopScheduler(room) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(17);
+/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _system__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
-/* harmony import */ var _temperature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(18);
+/* harmony import */ var _temperature__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "c", function() { return _temperature__WEBPACK_IMPORTED_MODULE_1__["a"]; });
 
-/* harmony import */ var _variables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19);
+/* harmony import */ var _variables__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(20);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "d", function() { return _variables__WEBPACK_IMPORTED_MODULE_2__["a"]; });
 
-/* harmony import */ var _nightShift__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20);
+/* harmony import */ var _nightShift__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(21);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "a", function() { return _nightShift__WEBPACK_IMPORTED_MODULE_3__["a"]; });
 
 
@@ -296,6 +298,12 @@ function stopScheduler(room) {
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports) {
+
+module.exports = require("node-schedule");
+
+/***/ }),
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -310,19 +318,19 @@ const environment = {
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return app; });
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24);
+/* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25);
 /* harmony import */ var path__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(path__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var morgan__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(25);
+/* harmony import */ var morgan__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(26);
 /* harmony import */ var morgan__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(morgan__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8);
-/* harmony import */ var _cors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(27);
+/* harmony import */ var _cors__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(28);
 
 
 
@@ -342,14 +350,14 @@ app.use('/nightshift', _routes__WEBPACK_IMPORTED_MODULE_3__[/* nigthShiftRouter 
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return mqttService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var async_mqtt__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22);
+/* harmony import */ var async_mqtt__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23);
 /* harmony import */ var async_mqtt__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(async_mqtt__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _monorepo_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(0);
 
@@ -361,12 +369,9 @@ class MqttService {
     }
     connect(brokerAddress, messageHandler) {
         this.client = Object(async_mqtt__WEBPACK_IMPORTED_MODULE_1__["connect"])(`tcp://${brokerAddress}`);
-        this.client.on('connect', () => {
-            setTimeout(() => this.sendMessage(_monorepo_core__WEBPACK_IMPORTED_MODULE_2__[/* RequestGetTopic */ "e"].variables, String(Date.now())), 1000);
-        });
         this.client.on('message', (topic, bytes) => {
             const payload = String(bytes);
-            if (topic === _monorepo_core__WEBPACK_IMPORTED_MODULE_2__[/* RequestSetTopic */ "f"].confirmed) {
+            if (topic === _monorepo_core__WEBPACK_IMPORTED_MODULE_2__[/* RequestSetTopic */ "e"].confirmed) {
                 const [key, val] = payload.split('/')[1].split('=');
                 this.confirmations.set(key, parseFloat(val));
             }
@@ -396,29 +401,33 @@ const mqttService = new MqttService();
 
 
 /***/ }),
-/* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Room; });
-var Room;
-(function (Room) {
-    Room["studio"] = "studio";
-    Room["bathroom"] = "bathroom";
-    Room["kidsroom"] = "kidsroom";
-    Room["bedroom"] = "bedroom";
-    Room["outdoor"] = "outdoor";
-})(Room || (Room = {}));
-
-
-/***/ }),
 /* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RoomTemp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return UtilityTemp; });
+var RoomTemp;
+(function (RoomTemp) {
+    RoomTemp["studio"] = "studio";
+    RoomTemp["bathroom"] = "bathroom";
+    RoomTemp["kidsroom"] = "kidsroom";
+    RoomTemp["bedroom"] = "bedroom";
+})(RoomTemp || (RoomTemp = {}));
+var UtilityTemp;
+(function (UtilityTemp) {
+    UtilityTemp["outdoor"] = "outdoor";
+    UtilityTemp["water"] = "water";
+})(UtilityTemp || (UtilityTemp = {}));
+
+
+/***/ }),
+/* 14 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ReadTopic; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return RequestGetTopic; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return RequestSetTopic; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return RequestSetTopic; });
 var ReadTopic;
 (function (ReadTopic) {
     ReadTopic["studio"] = "temp/studio";
@@ -426,14 +435,11 @@ var ReadTopic;
     ReadTopic["kidsroom"] = "temp/kidsroom";
     ReadTopic["bedroom"] = "temp/bedroom";
     ReadTopic["outdoor"] = "temp/outdoor";
+    ReadTopic["water"] = "temp/water";
     ReadTopic["power"] = "power";
     ReadTopic["variables"] = "variables";
     ReadTopic["started"] = "started";
 })(ReadTopic || (ReadTopic = {}));
-var RequestGetTopic;
-(function (RequestGetTopic) {
-    RequestGetTopic["variables"] = "get/variables";
-})(RequestGetTopic || (RequestGetTopic = {}));
 var RequestSetTopic;
 (function (RequestSetTopic) {
     RequestSetTopic["hysteresis"] = "set/hysteresis";
@@ -447,7 +453,7 @@ var RequestSetTopic;
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -456,7 +462,7 @@ const NO_READINGS = -127;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -466,29 +472,33 @@ const NETWORK_PROD = {
     MS_ADDRESS: 'localhost',
     API_PORT: 3000,
     WEB_PORT: 3030,
-    HISTORY_PORT: 3033,
+    HISTORY_PORT: 3330,
+    INFLUX_PORT: 8086,
+    DB_PORT: 3333,
     MQTT_ADDRESS: 'localhost:1883',
 };
 const NETWORK_DEV = {
-    MS_ADDRESS: 'localhost',
+    MS_ADDRESS: '192.168.31.247',
     API_PORT: 8000,
     WEB_PORT: 8080,
-    HISTORY_PORT: 8088,
+    HISTORY_PORT: 8880,
+    INFLUX_PORT: 8086,
+    DB_PORT: 8888,
     MQTT_ADDRESS: '192.168.31.247:1883',
 };
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return setVariable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return setPower; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return setTemp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return logPower; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return logTemp; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getState; });
-/* unused harmony export setDayNightSchedule */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return setNightTemp; });
+/* unused harmony export logDayNightSchedule */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return logNightTemp; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return delNightTemp; });
 /* harmony import */ var _monorepo_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(0);
 
@@ -499,6 +509,7 @@ const homeState = {
         bedroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
         kidsroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
         outdoor: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
+        water: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
     },
     variables: {
         studio: _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"],
@@ -530,19 +541,19 @@ function setVariable(variable, val) {
     validateVariableName(variable);
     homeState.variables[variable] = val;
 }
-function setPower(power, state) {
+function logPower(power, state) {
     homeState.power[power] = state;
 }
-function setTemp(room, temp) {
+function logTemp(room, temp) {
     homeState.temp[room] = temp;
 }
 function getState() {
     return homeState;
 }
-function setDayNightSchedule(morning = 7, evening = 21) {
+function logDayNightSchedule(morning = 7, evening = 21) {
     homeState.nightShift = Object.assign({}, homeState.nightShift, { morning, evening });
 }
-function setNightTemp(room, nightTemp) {
+function logNightTemp(room, nightTemp) {
     homeState.nightShift.at.set(room, nightTemp);
 }
 function delNightTemp(room) {
@@ -553,14 +564,14 @@ function delNightTemp(room) {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return systemRouter; });
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(26);
+/* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(27);
 /* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(child_process__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
 /* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(debug__WEBPACK_IMPORTED_MODULE_2__);
@@ -573,7 +584,7 @@ function delNightTemp(room) {
 
 
 const debug = debug__WEBPACK_IMPORTED_MODULE_2__('heating-service:system');
-const systemRouter = express__WEBPACK_IMPORTED_MODULE_0__["Router"]();
+const systemRouter = Object(express__WEBPACK_IMPORTED_MODULE_0__["Router"])();
 systemRouter.get('/cputemp', (_req, res) => {
     Object(child_process__WEBPACK_IMPORTED_MODULE_1__["exec"])('vcgencmd measure_temp', (err, stdout, stderr) => {
         if (err) {
@@ -592,7 +603,7 @@ systemRouter.get('/state', (_req, res) => {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -612,7 +623,7 @@ systemRouter.get('/state', (_req, res) => {
 
 
 
-const temperatureRouter = express__WEBPACK_IMPORTED_MODULE_1__["Router"]();
+const temperatureRouter = Object(express__WEBPACK_IMPORTED_MODULE_1__["Router"])();
 temperatureRouter.get('/', (_req, res) => {
     const { temp } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* getState */ "b"])();
     res.send(temp);
@@ -620,20 +631,20 @@ temperatureRouter.get('/', (_req, res) => {
 temperatureRouter.put('/', (req, res) => tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](undefined, void 0, void 0, function* () {
     const { room, temp } = req.body;
     switch (room) {
-        case _monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* Room */ "g"].studio:
-            yield _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_4__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RequestSetTopic */ "f"].studio, temp);
+        case _monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RoomTemp */ "f"].studio:
+            yield _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_4__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RequestSetTopic */ "e"].studio, temp);
             res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_2__["OK"]);
             break;
-        case _monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* Room */ "g"].bathroom:
-            yield _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_4__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RequestSetTopic */ "f"].bathroom, temp);
+        case _monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RoomTemp */ "f"].bathroom:
+            yield _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_4__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RequestSetTopic */ "e"].bathroom, temp);
             res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_2__["OK"]);
             break;
-        case _monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* Room */ "g"].kidsroom:
-            yield _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_4__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RequestSetTopic */ "f"].kidsroom, temp);
+        case _monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RoomTemp */ "f"].kidsroom:
+            yield _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_4__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RequestSetTopic */ "e"].kidsroom, temp);
             res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_2__["OK"]);
             break;
-        case _monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* Room */ "g"].bedroom:
-            yield _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_4__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RequestSetTopic */ "f"].bedroom, temp);
+        case _monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RoomTemp */ "f"].bedroom:
+            yield _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_4__[/* mqttService */ "a"].setVariableValue(_monorepo_core__WEBPACK_IMPORTED_MODULE_3__[/* RequestSetTopic */ "e"].bedroom, temp);
             res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_2__["OK"]);
             break;
         default:
@@ -644,7 +655,7 @@ temperatureRouter.put('/', (req, res) => tslib__WEBPACK_IMPORTED_MODULE_0__["__a
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -660,7 +671,7 @@ temperatureRouter.put('/', (req, res) => tslib__WEBPACK_IMPORTED_MODULE_0__["__a
 
 
 
-const variablesRouter = express__WEBPACK_IMPORTED_MODULE_1__["Router"]();
+const variablesRouter = Object(express__WEBPACK_IMPORTED_MODULE_1__["Router"])();
 variablesRouter.put('/', (req, res) => tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](undefined, void 0, void 0, function* () {
     const variables = req.body;
     for (let [key, value] of Object.entries(variables)) {
@@ -677,7 +688,7 @@ variablesRouter.put('/', (req, res) => tslib__WEBPACK_IMPORTED_MODULE_0__["__awa
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -692,7 +703,7 @@ variablesRouter.put('/', (req, res) => tslib__WEBPACK_IMPORTED_MODULE_0__["__awa
 
 
 
-const nigthShiftRouter = express__WEBPACK_IMPORTED_MODULE_0__["Router"]();
+const nigthShiftRouter = Object(express__WEBPACK_IMPORTED_MODULE_0__["Router"])();
 nigthShiftRouter.get('/', (_req, res) => {
     const { nightShift } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
     res.send(nightShift);
@@ -711,19 +722,19 @@ nigthShiftRouter.delete('/', (req, res) => {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = require("http");
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = require("async-mqtt");
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -741,32 +752,35 @@ const parsePayload = (payload) => payload.split(';').map(keyVal => keyVal.split(
 const handleMessage = (topic, payload) => {
     switch (topic) {
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "d"].studio:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* Room */ "g"].studio, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* logTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RoomTemp */ "f"].studio, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "d"].bathroom:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* Room */ "g"].bathroom, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* logTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RoomTemp */ "f"].bathroom, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "d"].kidsroom:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* Room */ "g"].kidsroom, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* logTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RoomTemp */ "f"].kidsroom, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "d"].bedroom:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* Room */ "g"].bedroom, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* logTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RoomTemp */ "f"].bedroom, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "d"].outdoor:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* Room */ "g"].outdoor, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* logTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* UtilityTemp */ "g"].outdoor, parseFloat(payload));
+            break;
+        case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "d"].water:
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* logTemp */ "e"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* UtilityTemp */ "g"].water, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "d"].power:
-            parsePayload(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setPower */ "d"])(topic, value));
+            parsePayload(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* logPower */ "d"])(topic, value));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "d"].variables:
             parsePayload(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setVariable */ "f"])(stripSet(topic), parseFloat(value)));
             break;
-        case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "f"].confirmed:
+        case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* RequestSetTopic */ "e"].confirmed:
             const [key, val] = stripSet(payload).split('=');
             Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setVariable */ "f"])(key, parseFloat(val));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* ReadTopic */ "d"].started:
-            setAllVariables();
+            // setAllVariables();
             Object(_nightShift__WEBPACK_IMPORTED_MODULE_3__[/* setCurrentShift */ "a"])();
             break;
     }
@@ -782,30 +796,30 @@ function setAllVariables() {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = require("path");
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = require("morgan");
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = require("child_process");
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return corsMiddleware; });
-/* harmony import */ var cors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(28);
+/* harmony import */ var cors__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29);
 /* harmony import */ var cors__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(cors__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 /* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(debug__WEBPACK_IMPORTED_MODULE_1__);
@@ -826,7 +840,7 @@ const corsOptions = {
         }
         else {
             debug(`unknown origin ${origin}`);
-            callback(new Error('CORS IS NOT ALLOWED'));
+            callback(new Error(`CORS IS NOT ALLOWED for ${origin}`));
         }
     },
 };
@@ -834,32 +848,32 @@ const corsMiddleware = cors__WEBPACK_IMPORTED_MODULE_0__(corsOptions);
 
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = require("cors");
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(30);
+module.exports = __webpack_require__(31);
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(21);
+/* harmony import */ var http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
 /* harmony import */ var http__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(http__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6);
 /* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(debug__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
-/* harmony import */ var _utils_messageHandler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(23);
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
-/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(10);
+/* harmony import */ var _utils_messageHandler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(24);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(10);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(11);
 
 
 
@@ -896,12 +910,6 @@ server.on('listening', () => {
     _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].connect(_environments_environment__WEBPACK_IMPORTED_MODULE_4__[/* environment */ "a"].mqttBroker, _utils_messageHandler__WEBPACK_IMPORTED_MODULE_3__[/* handleMessage */ "a"]);
 });
 
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports) {
-
-module.exports = require("node-schedule");
 
 /***/ })
 /******/ ])));
