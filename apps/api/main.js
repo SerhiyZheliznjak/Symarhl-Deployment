@@ -372,7 +372,7 @@ class MqttService {
         this.client.on('message', (topic, bytes) => {
             const payload = String(bytes);
             if (topic === _monorepo_core__WEBPACK_IMPORTED_MODULE_2__[/* RequestSetTopic */ "e"].confirmed) {
-                const [key, val] = payload.split('/')[1].split('=');
+                const [key, val] = payload.split('=');
                 this.confirmations.set(key, parseFloat(val));
             }
             messageHandler(topic, payload);
@@ -789,7 +789,7 @@ function setAllVariables() {
     const { variables } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* getState */ "b"])();
     Object.keys(variables).forEach((variable, i) => {
         const value = variables[variable];
-        console.log(value);
+        console.log(`${variable}=${value}`);
         if (value !== _monorepo_core__WEBPACK_IMPORTED_MODULE_0__[/* NO_READINGS */ "c"])
             setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__[/* mqttService */ "a"].setVariableValue(`set/${variable}`, String(value)), i * 300);
     });
