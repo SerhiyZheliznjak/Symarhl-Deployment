@@ -1,4 +1,4 @@
-axios@0.19.0
+axios@0.21.2
 MIT
 Copyright (c) 2014-present Matt Zabriskie
 
