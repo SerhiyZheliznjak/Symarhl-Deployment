@@ -174,7 +174,8 @@ module.exports = require("express");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setAwayMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return setAwayMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return restoreVars; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
@@ -189,30 +190,25 @@ function setRoomTemp(room, temp) {
 }
 function setAwayMode(until, skipVarUpdate) {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-        if (!until) {
-            handleAwayUntilDone();
-        }
-        else {
-            if (!skipVarUpdate)
-                Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setAwayUntil */ "g"])(until);
-            yield setRoomTemp('studio', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
-            yield setRoomTemp('bathroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
-            yield setRoomTemp('kidsroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
-            yield setRoomTemp('bedroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
-            checkAwayUntilDone();
-        }
+        if (!skipVarUpdate)
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setAwayUntil */ "g"])(until);
+        yield setRoomTemp('studio', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
+        yield setRoomTemp('bathroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
+        yield setRoomTemp('kidsroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
+        yield setRoomTemp('bedroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
+        checkAwayUntilDone();
     });
 }
 function checkAwayUntilDone() {
     const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
     if (new Date(away.until).getTime() - Date.now() <= DAY) {
-        handleAwayUntilDone();
+        restoreVars();
     }
     else {
         setTimeout(checkAwayUntilDone, DAY / 4);
     }
 }
-function handleAwayUntilDone() {
+function restoreVars() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
         const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
         yield setRoomTemp('studio', away.restoreTo.studio);
@@ -306,7 +302,7 @@ app.use('/variables', _routes__WEBPACK_IMPORTED_MODULE_4__[/* variablesRouter */
 app.use('/schedule', _routes__WEBPACK_IMPORTED_MODULE_4__[/* scheduleRouter */ "a"]);
 Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* readVariablesFromFile */ "e"])().then(({ away }) => {
     if (away) {
-        Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_6__[/* setAwayMode */ "a"])(away.until, true);
+        Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_6__[/* setAwayMode */ "b"])(away.until, true);
     }
 });
 
@@ -726,11 +722,11 @@ variablesRouter.put('/', (req, res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__
 const scheduleRouter = Object(express__WEBPACK_IMPORTED_MODULE_0__["Router"])();
 scheduleRouter.put('/away', (req, res) => {
     const { until } = req.body;
-    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "a"])(until);
+    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "b"])(until);
     res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_1__["OK"]);
 });
 scheduleRouter.delete('/away', (_, res) => {
-    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "a"])(null);
+    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* restoreVars */ "a"])();
     res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_1__["OK"]);
 });
 
