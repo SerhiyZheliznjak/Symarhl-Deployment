@@ -188,15 +188,17 @@ function setRoomTemp(room, temp) {
     return _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__[/* mqttService */ "a"].setVariableValue(`set/${room}`, String(temp));
 }
 function setAwayMode(until, skipVarUpdate) {
-    if (until === null) {
-        Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "f"])();
-    }
-    else {
-        if (!skipVarUpdate)
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setAwayUntil */ "g"])(until);
-        ROOMS.forEach(room => setRoomTemp(room, _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]));
-        handleAwayUntilDone();
-    }
+    return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
+        if (until === null) {
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "f"])();
+        }
+        else {
+            if (!skipVarUpdate)
+                Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setAwayUntil */ "g"])(until);
+            yield Promise.all(ROOMS.map(room => setRoomTemp(room, _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"])));
+            handleAwayUntilDone();
+        }
+    });
 }
 function handleAwayUntilDone() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
