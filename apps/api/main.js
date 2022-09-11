@@ -189,7 +189,7 @@ function setRoomTemp(room, temp) {
 }
 function setAwayMode(until, skipVarUpdate) {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-        if (until === null) {
+        if (!until) {
             handleAwayUntilDone();
         }
         else {
