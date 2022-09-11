@@ -503,6 +503,10 @@ const readVariablesFromFile = () => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["_
     }
     return homeState;
 });
+readVariablesFromFile().then(({ variables, away }) => {
+    homeState.variables = variables;
+    homeState.away = away;
+});
 const saveVariables = () => {
     const { variables, away } = homeState;
     writeFile(variablesFilePath, JSON.stringify({ variables, away }));
