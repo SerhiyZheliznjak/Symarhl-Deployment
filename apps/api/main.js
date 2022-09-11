@@ -195,7 +195,10 @@ function setAwayMode(until, skipVarUpdate) {
         else {
             if (!skipVarUpdate)
                 Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setAwayUntil */ "g"])(until);
-            yield Promise.all(ROOMS.map(room => setRoomTemp(room, _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"])));
+            yield setRoomTemp('studio', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
+            yield setRoomTemp('bathroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
+            yield setRoomTemp('kidsroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
+            yield setRoomTemp('bedroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
             handleAwayUntilDone();
         }
     });
@@ -204,7 +207,10 @@ function handleAwayUntilDone() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
         const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
         if (new Date(away.until).getTime() - Date.now() <= DAY) {
-            yield Promise.all(ROOMS.map(room => setRoomTemp(room, away.restoreTo[room])));
+            yield setRoomTemp('studio', away.restoreTo.studio);
+            yield setRoomTemp('bathroom', away.restoreTo.bathroom);
+            yield setRoomTemp('kidsroom', away.restoreTo.kidsroom);
+            yield setRoomTemp('bedroom', away.restoreTo.bedroom);
             Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "f"])();
         }
         else {
@@ -551,6 +557,7 @@ const removeAwayUntil = () => {
         homeState.variables = Object.assign({}, homeState.away.restoreTo);
     }
     homeState.away = null;
+    saveVariables();
 };
 function logPower(power, state) {
     homeState.power[power] = state;
