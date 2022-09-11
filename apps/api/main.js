@@ -129,6 +129,8 @@
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "f", function() { return _lib_store__WEBPACK_IMPORTED_MODULE_0__["f"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "g", function() { return _lib_store__WEBPACK_IMPORTED_MODULE_0__["g"]; });
+
 
 
 
@@ -170,6 +172,46 @@ module.exports = require("tslib");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return setAwayMode; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return handleAwayUntilDone; });
+/* harmony import */ var _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
+/* harmony import */ var _monorepo_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+
+
+const ROOMS = ['studio', 'bathroom', 'kidsroom', 'bedroom'];
+const DAY = 24 * 60 * 60 * 1000;
+function queueShift(topic, temp) {
+    setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_0__[/* mqttService */ "a"].setVariableValue(`set/${topic}`, String(temp)), 500);
+}
+function setAwayMode(until) {
+    if (until === null) {
+        Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* removeAwayUntil */ "e"])();
+    }
+    else {
+        const awayTemp = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setAwayUntil */ "f"])(until);
+        if (awayTemp) {
+            ROOMS.forEach(room => queueShift(room, awayTemp));
+            handleAwayUntilDone();
+        }
+    }
+}
+function handleAwayUntilDone() {
+    const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* getState */ "a"])();
+    if (new Date(away.until).getTime() - Date.now() <= DAY) {
+        ROOMS.forEach(room => queueShift(room, away.restoreTo[room]));
+        Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* removeAwayUntil */ "e"])();
+    }
+    else {
+        setTimeout(handleAwayUntilDone, DAY / 4);
+    }
+}
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(18);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "b", function() { return _system__WEBPACK_IMPORTED_MODULE_0__["a"]; });
 
@@ -189,13 +231,13 @@ module.exports = require("tslib");
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = require("debug");
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -210,7 +252,7 @@ const environment = {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -223,7 +265,11 @@ const environment = {
 /* harmony import */ var morgan__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(morgan__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var cors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27);
 /* harmony import */ var cors__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(cors__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(6);
+/* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(7);
+/* harmony import */ var _monorepo_store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(1);
+/* harmony import */ var _utils_scheduleService__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(6);
+
+
 
 
 
@@ -241,45 +287,12 @@ app.use('/temp', _routes__WEBPACK_IMPORTED_MODULE_4__[/* temperatureRouter */ "c
 app.use('/system', _routes__WEBPACK_IMPORTED_MODULE_4__[/* systemRouter */ "b"]);
 app.use('/variables', _routes__WEBPACK_IMPORTED_MODULE_4__[/* variablesRouter */ "d"]);
 app.use('/schedule', _routes__WEBPACK_IMPORTED_MODULE_4__[/* scheduleRouter */ "a"]);
-
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setAwayMode; });
-/* unused harmony export handleAwayUntilDone */
-/* harmony import */ var _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
-/* harmony import */ var _monorepo_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
-
-
-const ROOMS = ['studio', 'bathroom', 'kidsroom', 'bedroom'];
-const DAY = 24 * 60 * 60 * 1000;
-function queueShift(topic, temp) {
-    setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_0__[/* mqttService */ "a"].setVariableValue(`set/${topic}`, String(temp)), 500);
-}
-function setAwayMode(until) {
-    if (until === null) {
-        Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* removeAwayUntil */ "d"])();
+Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* readVariablesFromFile */ "d"])().then(({ away }) => {
+    if (away) {
+        Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_6__[/* handleAwayUntilDone */ "a"])();
     }
-    else {
-        const awayTemp = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* setAwayUntil */ "e"])(until);
-        if (awayTemp)
-            ROOMS.forEach(room => queueShift(room, awayTemp));
-    }
-}
-function handleAwayUntilDone() {
-    const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* getState */ "a"])();
-    if (new Date(away.until).getTime() - Date.now() <= DAY) {
-        ROOMS.forEach(room => queueShift(room, away.restoreTo[room]));
-        Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_1__[/* removeAwayUntil */ "d"])();
-    }
-    else {
-        setTimeout(handleAwayUntilDone, DAY / 2);
-    }
-}
+});
+
 
 
 /***/ }),
@@ -436,10 +449,10 @@ const parsePayload = (payload) => payload.split(';').map(keyVal => keyVal.split(
 
 "use strict";
 /* unused harmony export initialHomeState */
-/* unused harmony export readVariablesFromFile */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return setVariable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return setAwayUntil; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return removeAwayUntil; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return readVariablesFromFile; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return setVariable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return setAwayUntil; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return removeAwayUntil; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return logPower; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return logTemp; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getState; });
@@ -501,10 +514,6 @@ const readVariablesFromFile = () => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["_
     }
     return homeState;
 });
-readVariablesFromFile().then(({ variables, away }) => {
-    homeState.variables = variables;
-    homeState.away = away;
-});
 const saveVariables = () => {
     const { variables, away } = homeState;
     writeFile(variablesFilePath, JSON.stringify({ variables, away }));
@@ -564,7 +573,7 @@ function delNightTemp(room) {
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(28);
 /* harmony import */ var child_process__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(child_process__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(7);
+/* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(8);
 /* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(debug__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var http_status_codes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3);
 /* harmony import */ var http_status_codes__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(http_status_codes__WEBPACK_IMPORTED_MODULE_3__);
@@ -688,18 +697,18 @@ variablesRouter.put('/', (req, res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__
 /* harmony import */ var express__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(express__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var http_status_codes__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
 /* harmony import */ var http_status_codes__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(http_status_codes__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(10);
+/* harmony import */ var _utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6);
 
 
 
 const scheduleRouter = Object(express__WEBPACK_IMPORTED_MODULE_0__["Router"])();
 scheduleRouter.put('/away', (req, res) => {
     const { until } = req.body;
-    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "a"])(until);
+    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "b"])(until);
     res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_1__["OK"]);
 });
 scheduleRouter.delete('/away', (_, res) => {
-    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "a"])(null);
+    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "b"])(null);
     res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_1__["OK"]);
 });
 
@@ -764,7 +773,7 @@ const handleMessage = (topic, payload) => {
         //   break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "d"].confirmed:
             const [key, val] = payload.split('=');
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "f"])(key, parseFloat(val));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "g"])(key, parseFloat(val));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].started:
             void setAllVariables();
@@ -778,7 +787,7 @@ function setAllVariables() {
         const values = away ? away.restoreTo : variables;
         Object.keys(values).forEach((variable, i) => {
             const value = values[variable];
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "f"])(variable, value);
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "g"])(variable, value);
             if (value !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"])
                 setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* mqttService */ "a"].setVariableValue(`set/${variable}`, String(value)), i * 300);
         });
@@ -825,12 +834,12 @@ module.exports = __webpack_require__(30);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22);
 /* harmony import */ var http__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(http__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(7);
+/* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(8);
 /* harmony import */ var debug__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(debug__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(2);
 /* harmony import */ var _utils_messageHandler__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(24);
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(8);
-/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(9);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(9);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(10);
 
 
 
