@@ -201,8 +201,10 @@ function setAwayMode(until, skipVarUpdate) {
 }
 function checkAwayUntilDone() {
     const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
+    console.log('checking away', away.until);
     if (new Date(away.until).getTime() - Date.now() <= DAY) {
-        restoreVars();
+        console.log(' away done', away.until);
+        restoreVars().then(() => { });
     }
     else {
         setTimeout(checkAwayUntilDone, DAY / 4);
@@ -211,10 +213,12 @@ function checkAwayUntilDone() {
 function restoreVars() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
         const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
+        console.log('restoring values', away);
         yield setRoomTemp('studio', away.restoreTo.studio);
         yield setRoomTemp('bathroom', away.restoreTo.bathroom);
         yield setRoomTemp('kidsroom', away.restoreTo.kidsroom);
         yield setRoomTemp('bedroom', away.restoreTo.bedroom);
+        console.log('restoring values done');
         Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "f"])();
     });
 }
@@ -302,6 +306,7 @@ app.use('/variables', _routes__WEBPACK_IMPORTED_MODULE_4__[/* variablesRouter */
 app.use('/schedule', _routes__WEBPACK_IMPORTED_MODULE_4__[/* scheduleRouter */ "a"]);
 Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* readVariablesFromFile */ "e"])().then(({ away }) => {
     if (away) {
+        console.log('read away from file', away.until);
         Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_6__[/* setAwayMode */ "b"])(away.until, true);
     }
 });
@@ -557,6 +562,7 @@ const removeAwayUntil = () => {
         homeState.variables = Object.assign({}, homeState.away.restoreTo);
     }
     homeState.away = null;
+    console.log('removing away');
     saveVariables();
 };
 function logPower(power, state) {
@@ -726,8 +732,9 @@ scheduleRouter.put('/away', (req, res) => {
     res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_1__["OK"]);
 });
 scheduleRouter.delete('/away', (_, res) => {
-    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* restoreVars */ "a"])();
-    res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_1__["OK"]);
+    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* restoreVars */ "a"])().then(() => {
+        res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_1__["OK"]);
+    });
 });
 
 
