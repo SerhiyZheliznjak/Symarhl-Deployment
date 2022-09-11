@@ -131,6 +131,8 @@
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "g", function() { return _lib_store__WEBPACK_IMPORTED_MODULE_0__["g"]; });
 
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "h", function() { return _lib_store__WEBPACK_IMPORTED_MODULE_0__["h"]; });
+
 
 
 
@@ -172,8 +174,7 @@ module.exports = require("express");
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return setAwayMode; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return handleAwayUntilDone; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return setAwayMode; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tslib__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
@@ -186,24 +187,23 @@ const DAY = 24 * 60 * 60 * 1000;
 function setRoomTemp(room, temp) {
     return _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_1__[/* mqttService */ "a"].setVariableValue(`set/${room}`, String(temp));
 }
-function setAwayMode(until) {
+function setAwayMode(until, skipVarUpdate) {
     if (until === null) {
-        Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "e"])();
+        Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "f"])();
     }
     else {
-        const awayTemp = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setAwayUntil */ "f"])(until);
-        if (awayTemp) {
-            ROOMS.forEach(room => setRoomTemp(room, awayTemp));
-            handleAwayUntilDone();
-        }
+        if (!skipVarUpdate)
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setAwayUntil */ "g"])(until);
+        ROOMS.forEach(room => setRoomTemp(room, _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]));
+        handleAwayUntilDone();
     }
 }
 function handleAwayUntilDone() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-        const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "a"])();
+        const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
         if (new Date(away.until).getTime() - Date.now() <= DAY) {
             yield Promise.all(ROOMS.map(room => setRoomTemp(room, away.restoreTo[room])));
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "e"])();
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "f"])();
         }
         else {
             setTimeout(handleAwayUntilDone, DAY / 4);
@@ -292,9 +292,9 @@ app.use('/temp', _routes__WEBPACK_IMPORTED_MODULE_4__[/* temperatureRouter */ "c
 app.use('/system', _routes__WEBPACK_IMPORTED_MODULE_4__[/* systemRouter */ "b"]);
 app.use('/variables', _routes__WEBPACK_IMPORTED_MODULE_4__[/* variablesRouter */ "d"]);
 app.use('/schedule', _routes__WEBPACK_IMPORTED_MODULE_4__[/* scheduleRouter */ "a"]);
-Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* readVariablesFromFile */ "d"])().then(({ away }) => {
+Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* readVariablesFromFile */ "e"])().then(({ away }) => {
     if (away) {
-        Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_6__[/* handleAwayUntilDone */ "a"])();
+        Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_6__[/* setAwayMode */ "a"])(away.until, true);
     }
 });
 
@@ -457,14 +457,15 @@ const parsePayload = (payload) => payload.split(';').map(keyVal => keyVal.split(
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AWAY_TEMP; });
 /* unused harmony export initialHomeState */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return readVariablesFromFile; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return setVariable; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return setAwayUntil; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return removeAwayUntil; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return logPower; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return logTemp; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return getState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return readVariablesFromFile; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return setVariable; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return setAwayUntil; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return removeAwayUntil; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return logPower; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return logTemp; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return getState; });
 /* unused harmony export logDayNightSchedule */
 /* unused harmony export logNightTemp */
 /* unused harmony export delNightTemp */
@@ -541,7 +542,6 @@ function setAwayUntil(awayUntil) {
         homeState.away = { until: awayUntil, restoreTo: Object.assign({}, homeState.variables) };
         homeState.variables = Object.assign(Object.assign({}, homeState.variables), { bathroom: AWAY_TEMP, bedroom: AWAY_TEMP, kidsroom: AWAY_TEMP, studio: AWAY_TEMP });
         saveVariables();
-        return AWAY_TEMP;
     }
 }
 const removeAwayUntil = () => {
@@ -606,7 +606,7 @@ systemRouter.get('/cputemp', (_req, res) => {
     });
 });
 systemRouter.get('/state', (_req, res) => {
-    res.send(Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_4__[/* getState */ "a"])());
+    res.send(Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_4__[/* getState */ "b"])());
 });
 
 
@@ -634,7 +634,7 @@ systemRouter.get('/state', (_req, res) => {
 
 const temperatureRouter = Object(express__WEBPACK_IMPORTED_MODULE_1__["Router"])();
 temperatureRouter.get('/', (_req, res) => {
-    const { temp } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* getState */ "a"])();
+    const { temp } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* getState */ "b"])();
     res.send(temp);
 });
 temperatureRouter.put('/', (req, res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(void 0, void 0, void 0, function* () {
@@ -713,11 +713,11 @@ variablesRouter.put('/', (req, res) => Object(tslib__WEBPACK_IMPORTED_MODULE_0__
 const scheduleRouter = Object(express__WEBPACK_IMPORTED_MODULE_0__["Router"])();
 scheduleRouter.put('/away', (req, res) => {
     const { until } = req.body;
-    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "b"])(until);
+    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "a"])(until);
     res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_1__["OK"]);
 });
 scheduleRouter.delete('/away', (_, res) => {
-    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "b"])(null);
+    Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_2__[/* setAwayMode */ "a"])(null);
     res.send(http_status_codes__WEBPACK_IMPORTED_MODULE_1__["OK"]);
 });
 
@@ -754,25 +754,25 @@ module.exports = require("async-mqtt");
 const handleMessage = (topic, payload) => {
     switch (topic) {
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].studio:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "c"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].studio, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "d"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].studio, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].bathroom:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "c"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].bathroom, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "d"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].bathroom, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].kidsroom:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "c"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].kidsroom, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "d"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].kidsroom, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].bedroom:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "c"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].bedroom, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "d"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].bedroom, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].outdoor:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "c"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* UtilityTemp */ "f"].outdoor, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "d"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* UtilityTemp */ "f"].outdoor, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].water:
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "c"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* UtilityTemp */ "f"].water, parseFloat(payload));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logTemp */ "d"])(_monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* UtilityTemp */ "f"].water, parseFloat(payload));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].power:
-            Object(_monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* parsePayload */ "b"])(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logPower */ "b"])(topic, value));
+            Object(_monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* parsePayload */ "b"])(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logPower */ "c"])(topic, value));
             break;
         // case ReadTopic.variables:
         //   parsePayload(payload).forEach(
@@ -782,7 +782,7 @@ const handleMessage = (topic, payload) => {
         //   break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "d"].confirmed:
             const [key, val] = payload.split('=');
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "g"])(key, parseFloat(val));
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "h"])(key, parseFloat(val));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].started:
             void setAllVariables();
@@ -792,11 +792,11 @@ const handleMessage = (topic, payload) => {
 };
 function setAllVariables() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-        const { variables, away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "a"])();
+        const { variables, away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
         const values = away ? away.restoreTo : variables;
         Object.keys(values).forEach((variable, i) => {
             const value = values[variable];
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "g"])(variable, value);
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "h"])(variable, value);
             if (value !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"])
                 setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* mqttService */ "a"].setVariableValue(`set/${variable}`, String(value)), i * 300);
         });
