@@ -466,12 +466,12 @@ const initialHomeState = {
         water: _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"],
     },
     variables: {
-        studio: _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"],
-        bathroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"],
-        kidsroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"],
-        bedroom: _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"],
-        interval: _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"],
-        hysteresis: _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"],
+        studio: AWAY_TEMP,
+        bathroom: AWAY_TEMP,
+        kidsroom: AWAY_TEMP,
+        bedroom: AWAY_TEMP,
+        interval: 20000,
+        hysteresis: 0.3,
     },
     power: {
         pump: '-1',
@@ -482,7 +482,7 @@ const initialHomeState = {
         bedroom: '-1',
     },
     nightShift: {
-        at: new Map(),
+        at: null,
         morning: 7,
         evening: 21,
     },
@@ -526,7 +526,7 @@ function setAwayUntil(awayUntil) {
 }
 const removeAwayUntil = () => {
     if (homeState.away) {
-        homeState.variables = Object.assign({}, (homeState.away.restoreTo || initialHomeState.variables));
+        homeState.variables = Object.assign({}, homeState.away.restoreTo);
     }
     homeState.away = null;
 };
@@ -774,8 +774,8 @@ function setAllVariables() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
         const { variables, away } = yield Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* readVariablesFromFile */ "d"])();
         const values = away ? away.restoreTo : variables;
-        Object.keys(variables).forEach((variable, i) => {
-            const value = variables[variable];
+        Object.keys(values).forEach((variable, i) => {
+            const value = values[variable];
             if (value !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"])
                 setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* mqttService */ "a"].setVariableValue(`set/${variable}`, String(value)), i * 300);
         });
