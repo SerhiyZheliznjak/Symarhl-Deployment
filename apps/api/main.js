@@ -776,6 +776,7 @@ function setAllVariables() {
         const values = away ? away.restoreTo : variables;
         Object.keys(values).forEach((variable, i) => {
             const value = values[variable];
+            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "g"])(variable, value);
             if (value !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"])
                 setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* mqttService */ "a"].setVariableValue(`set/${variable}`, String(value)), i * 300);
         });
