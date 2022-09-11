@@ -190,7 +190,7 @@ function setRoomTemp(room, temp) {
 function setAwayMode(until, skipVarUpdate) {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
         if (until === null) {
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "f"])();
+            handleAwayUntilDone();
         }
         else {
             if (!skipVarUpdate)
@@ -199,23 +199,27 @@ function setAwayMode(until, skipVarUpdate) {
             yield setRoomTemp('bathroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
             yield setRoomTemp('kidsroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
             yield setRoomTemp('bedroom', _monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* AWAY_TEMP */ "a"]);
-            handleAwayUntilDone();
+            checkAwayUntilDone();
         }
     });
+}
+function checkAwayUntilDone() {
+    const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
+    if (new Date(away.until).getTime() - Date.now() <= DAY) {
+        handleAwayUntilDone();
+    }
+    else {
+        setTimeout(checkAwayUntilDone, DAY / 4);
+    }
 }
 function handleAwayUntilDone() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
         const { away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
-        if (new Date(away.until).getTime() - Date.now() <= DAY) {
-            yield setRoomTemp('studio', away.restoreTo.studio);
-            yield setRoomTemp('bathroom', away.restoreTo.bathroom);
-            yield setRoomTemp('kidsroom', away.restoreTo.kidsroom);
-            yield setRoomTemp('bedroom', away.restoreTo.bedroom);
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "f"])();
-        }
-        else {
-            setTimeout(handleAwayUntilDone, DAY / 4);
-        }
+        yield setRoomTemp('studio', away.restoreTo.studio);
+        yield setRoomTemp('bathroom', away.restoreTo.bathroom);
+        yield setRoomTemp('kidsroom', away.restoreTo.kidsroom);
+        yield setRoomTemp('bedroom', away.restoreTo.bedroom);
+        Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* removeAwayUntil */ "f"])();
     });
 }
 
