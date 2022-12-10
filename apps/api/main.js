@@ -306,7 +306,7 @@ const restoreState = () => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/
     }
 });
 // instead there should be some kind of run on arduino is ready or smth
-setTimeout(restoreState, 60 * 2 * 1000);
+setTimeout(restoreState, 30 * 1000);
 
 
 
