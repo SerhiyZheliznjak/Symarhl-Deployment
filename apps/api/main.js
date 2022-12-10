@@ -300,11 +300,13 @@ app.use('/temp', _routes__WEBPACK_IMPORTED_MODULE_4__[/* temperatureRouter */ "c
 app.use('/system', _routes__WEBPACK_IMPORTED_MODULE_4__[/* systemRouter */ "b"]);
 app.use('/variables', _routes__WEBPACK_IMPORTED_MODULE_4__[/* variablesRouter */ "d"]);
 app.use('/schedule', _routes__WEBPACK_IMPORTED_MODULE_4__[/* scheduleRouter */ "a"]);
-Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* readVariablesFromFile */ "e"])().then(({ away }) => {
+const restoreState = () => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* readVariablesFromFile */ "e"])().then(({ away }) => {
     if (away) {
         Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_6__[/* setAwayMode */ "b"])(away.until, true);
     }
 });
+// instead there should be some kind of run on arduino is ready or smth
+setTimeout(restoreState, 60 * 2 * 1000);
 
 
 
