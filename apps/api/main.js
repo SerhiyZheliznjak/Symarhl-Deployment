@@ -300,13 +300,13 @@ app.use('/temp', _routes__WEBPACK_IMPORTED_MODULE_4__[/* temperatureRouter */ "c
 app.use('/system', _routes__WEBPACK_IMPORTED_MODULE_4__[/* systemRouter */ "b"]);
 app.use('/variables', _routes__WEBPACK_IMPORTED_MODULE_4__[/* variablesRouter */ "d"]);
 app.use('/schedule', _routes__WEBPACK_IMPORTED_MODULE_4__[/* scheduleRouter */ "a"]);
-const restoreState = () => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* readVariablesFromFile */ "e"])().then(({ away }) => {
+Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_5__[/* readVariablesFromFile */ "e"])().then(({ away }) => {
     if (away) {
         Object(_utils_scheduleService__WEBPACK_IMPORTED_MODULE_6__[/* setAwayMode */ "b"])(away.until, true);
     }
+    else {
+    }
 });
-// instead there should be some kind of run on arduino is ready or smth
-setTimeout(restoreState, 30 * 1000);
 
 
 
@@ -786,25 +786,18 @@ const handleMessage = (topic, payload) => {
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].power:
             Object(_monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* parsePayload */ "b"])(payload).forEach(([topic, value]) => Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* logPower */ "c"])(topic, value));
             break;
-        // case ReadTopic.variables:
-        //   parsePayload(payload).forEach(
-        //     ([topic, value]: [keyof Variables, string]) =>
-        //       setVariable(topic, parseFloat(value)),
-        //   );
-        //   break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RequestSetTopic */ "d"].confirmed:
             const [key, val] = payload.split('=');
             Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "h"])(key, parseFloat(val));
             break;
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].started:
             void setAllVariables();
-            // setCurrentShift();
             break;
     }
 };
 function setAllVariables() {
     return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"])(this, void 0, void 0, function* () {
-        const { variables, away } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
+        const { variables, away } = yield Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* readVariablesFromFile */ "e"])();
         const values = away ? away.restoreTo : variables;
         Object.keys(values).forEach((variable, i) => {
             const value = values[variable];
