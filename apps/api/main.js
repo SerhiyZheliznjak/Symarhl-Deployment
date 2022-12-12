@@ -799,9 +799,9 @@ const handleMessage = (topic, payload) => {
 const verifyVariables = (payload) => {
     const { variables } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
     const hasDifference = Object(_monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* parsePayload */ "b"])(payload).find(([topic, value]) => {
-        return ((variables[topic] !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"] &&
+        return (variables[topic] !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"] &&
             parseFloat(value) !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"] &&
-            variables[topic]) !== parseFloat(value));
+            variables[topic] !== parseFloat(value));
     });
     if (hasDifference) {
         setAllVariables();
