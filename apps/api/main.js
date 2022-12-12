@@ -799,6 +799,7 @@ const handleMessage = (topic, payload) => {
 const verifyVariables = (payload) => {
     const { variables } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
     const hasDifference = Object(_monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* parsePayload */ "b"])(payload).find(([topic, value]) => {
+        console.log('variables[topic]', variables[topic], parseFloat(value));
         return (variables[topic] !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"] &&
             parseFloat(value) !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"] &&
             variables[topic] !== parseFloat(value));
@@ -812,10 +813,12 @@ function setAllVariables() {
         const { variables, away } = yield Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* readVariablesFromFile */ "e"])();
         const values = away ? away.restoreTo : variables;
         Object.keys(values).forEach((variable, i) => {
-            const value = values[variable];
-            Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "h"])(variable, value);
-            if (value !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"])
-                setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* mqttService */ "a"].setVariableValue(`set/${variable}`, String(value)), i * 300);
+            if (variable) {
+                const value = values[variable];
+                Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* setVariable */ "h"])(variable, value);
+                if (value !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"])
+                    setTimeout(() => _monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* mqttService */ "a"].setVariableValue(`set/${variable}`, String(value)), i * 300);
+            }
         });
     });
 }
