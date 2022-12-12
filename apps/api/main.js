@@ -760,7 +760,12 @@ module.exports = require("async-mqtt");
 
 
 
-// import {setCurrentShift} from './nightShift';
+const rooms = [
+    _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].studio,
+    _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].bathroom,
+    _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].bedroom,
+    _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* RoomTemp */ "e"].kidsroom,
+];
 const handleMessage = (topic, payload) => {
     switch (topic) {
         case _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* ReadTopic */ "c"].studio:
@@ -799,10 +804,11 @@ const handleMessage = (topic, payload) => {
 const verifyVariables = (payload) => {
     const { variables } = Object(_monorepo_store__WEBPACK_IMPORTED_MODULE_2__[/* getState */ "b"])();
     const hasDifference = Object(_monorepo_mqtt__WEBPACK_IMPORTED_MODULE_3__[/* parsePayload */ "b"])(payload).find(([topic, value]) => {
-        console.log('variables[topic]', variables[topic], parseFloat(value));
-        return (variables[topic] !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"] &&
-            parseFloat(value) !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"] &&
-            variables[topic] !== parseFloat(value));
+        if (rooms.includes(topic))
+            return (variables[topic] !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"] &&
+                parseFloat(value) !== _monorepo_core__WEBPACK_IMPORTED_MODULE_1__[/* NO_READINGS */ "b"] &&
+                variables[topic] !== parseFloat(value));
+        return false;
     });
     if (hasDifference) {
         setAllVariables();
